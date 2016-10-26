@@ -11,6 +11,9 @@ import {
   View
 } from 'react-native';
 import axios from 'axios';
+import SignedOutView from './modules/SignedOutView';
+import SignedInView from './modules/SignedInView';
+import SignUpView from './modules/SignUpView';
 
 export default class PraveenRNApp extends Component {
   constructor(props) {
@@ -55,6 +58,34 @@ export default class PraveenRNApp extends Component {
         fullName: 'Lord Praveen'
       });
     };
+    this._setState = function (state) {
+      oThis.setState(state);
+    };
+    this._handleSignUp = function () {
+      fetch("https://feedme.allan.cx/api/v1/authenticate", {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "email": oThis.state.Username,
+          "password": oThis.state.Password
+          "name": oThis.state.regName
+        })
+      }).then((responseJson) => {
+        var res = JSON.parse(responseJson._bodyInit);
+        if (responseJson.ok) {
+          if (res.code == "USER_CREATED")
+            ; // Success
+        } else {
+          if (res.code == "SIGNUP_ERROR")
+            ; // Fish
+          else if (res.code == "INVALID_PROMO")
+            ; // Fish
+        }
+      });
+    };
     this._handleSignIn = function () {
       fetch("https://feedme.allan.cx/api/v1/authenticate", {
         method: 'POST',
@@ -70,14 +101,11 @@ export default class PraveenRNApp extends Component {
         if (responseJson.ok) {
           var token = JSON.parse(responseJson._bodyInit);
           token = token.token;
-          // -------------------------------------------------------- console.warn("Successfully received token.");
           oThis.setState({curState: 'UserTokenSuccess'});
           if (typeof token == "string" && token.length > 50) {
-            // -------------------------------------------------------- console.warn("Received token seems to be right.");
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             axios.get('https://feedme.allan.cx/api/v1/account')
               .then((response) => {
-                // -------------------------------------------------------- console.warn("User Successfully Logged In.");
                 oThis.setState({
                   purchases: (response.data.purchases) ? response.data.purchases : [],
                   account: response.data.account,
@@ -101,59 +129,15 @@ export default class PraveenRNApp extends Component {
   render() {
     if (this.state.curState != 'UserLoggedIn')
       return (
-        <View style={styles.container}>
-          <Image source={require('./img/logo.png')} style={styles.logo} />
-          <Text style={styles.h1}>Please Sign in to Continue</Text>
-          {this._errorMessage()}
-          <View style={styles.inputs}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                autoFocus={true}
-                style={[styles.input, styles.whiteFont]}
-                placeholder="Username"
-                placeholderTextColor="#FFF"
-                onChangeText={(Username) => this.setState({Username})}
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                password={true}
-                style={[styles.input, styles.whiteFont]}
-                placeholder="Password"
-                placeholderTextColor="#FFF"
-                onChangeText={(Password) => this.setState({Password})}
-              />
-            </View>
-          </View>
-          <View style={styles.forgotContainer}>
-            <Text style={styles.greyFont}>Forgot Password</Text>
-          </View>
-          <View style={styles.signincont}>
-            <View style={styles.signin}>
-              <TouchableHighlight onPress={this._handleSignIn}><Text style={styles.whiteFont}>Sign In</Text></TouchableHighlight>
-            </View>
-            <Text style={{width: 10}} />
-            <View style={styles.signin}>
-              <TouchableHighlight onPress={this._handleSignInCheat}><Text style={styles.whiteFont}>Cheat</Text></TouchableHighlight>
-            </View>
-          </View>
-          <View style={styles.signup}>
-            <Text style={styles.greyFont}>Don&lsquo;t have an account?<Text style={styles.whiteFont}>  Sign Up</Text></Text>
-          </View>
-        </View>
+          <SignedOutView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
+      );
+    else if (this.state.curState != 'UserSignUp')
+      return (
+          <SignUpView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
       );
     else
       return (
-        <View style={styles.container}>
-          <Text style={styles.h1}>Welcome, {this.state.fullName}</Text>
-          <View style={styles.signin}>
-            <TouchableHighlight onPress={this._handleSignOut}><Text style={styles.whiteFont}>Sign Out</Text></TouchableHighlight>
-          </View>
-        </View>
+          <SignedInView styles={styles} fullName={this.state.fullName} handleSignOut={this._handleSignOut} />
       );
   }
 }
