@@ -13,7 +13,7 @@ import {
 
 export const SignUpView = ({styles, handleSignIn, handleSignInCheat, handleSignUp, errorMessage, setState}) => (<View style={styles.container}>
   <Image source={require('../img/logo.png')} style={styles.logo} />
-  <Text style={styles.h1}>Please Sign in to Continue</Text>
+  <Text style={styles.h1}>Please Sign Up here</Text>
   {errorMessage()}
   <View style={styles.inputs}>
     <View style={styles.inputContainer}>
@@ -28,19 +28,20 @@ export const SignUpView = ({styles, handleSignIn, handleSignInCheat, handleSignU
         onChangeText={(Password) => setState({Password})}
       />
     </View>
+    <View style={styles.inputContainer}>
+      <TextInput autoCapitalize="none" autoCorrect={false} autoFocus={false} style={[styles.input, styles.whiteFont]}
+        placeholder="Full Name" placeholderTextColor="#FFF"
+        onChangeText={(regName) => setState({regName})}
+      />
+    </View>
   </View>
-  <ForgotPassword styles={styles} />
   <View style={styles.signincont}>
     <View style={styles.signin}>
-      <TouchableHighlight onPress={handleSignIn}><Text style={styles.whiteFont}>Sign In</Text></TouchableHighlight>
-    </View>
-    <Text style={{width: 10}} />
-    <View style={styles.signin}>
-      <TouchableHighlight onPress={handleSignInCheat}><Text style={styles.whiteFont}>Cheat</Text></TouchableHighlight>
+      <TouchableHighlight onPress={handleSignIn}><Text style={styles.whiteFont}>Sign Up</Text></TouchableHighlight>
     </View>
   </View>
   <View style={styles.signup}>
-    <Text style={styles.greyFont}>Don&lsquo;t have an account?<Text style={styles.whiteFont}>  <TouchableHighlight onPress={() => setState({curState: 'UserSignUp'})}>Sign Up</TouchableHighlight></Text></Text>
+    <Text style={styles.greyFont}>Have an account already? <Text style={styles.whiteFont} onPress={() => setState({curState: 'Initial'})}>Sign In</Text></Text>
   </View>
 </View>);
 

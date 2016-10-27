@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import ForgotPassword from './ForgotPassword';
 
-export const SignedOutView = ({styles, handleSignIn, handleSignInCheat, handleSignUp, errorMessage, setState}) => (<View style={styles.container}>
+export const SignedOutView = ({styles, handleSignIn, handleSignInCheat, handleSignUp, errorMessage, setState}) => (
+<View style={styles.container}>
   <Image source={require('../img/logo.png')} style={styles.logo} />
   <Text style={styles.h1}>Please Sign in to Continue</Text>
   {errorMessage()}
@@ -41,7 +42,7 @@ export const SignedOutView = ({styles, handleSignIn, handleSignInCheat, handleSi
     </View>
   </View>
   <View style={styles.signup}>
-    <Text style={styles.greyFont}>Don&lsquo;t have an account?<Text style={styles.whiteFont}>  <TouchableHighlight onPress={() => setState({curState: 'UserSignUp'})}>Sign Up</TouchableHighlight></Text></Text>
+    <Text style={styles.greyFont}>Don&lsquo;t have an account?<Text style={styles.whiteFont} onPress={() => setState({curState: "UserSignUp"})}>  Sign Up</Text></Text>
   </View>
 </View>);
 

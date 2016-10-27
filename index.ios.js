@@ -43,11 +43,12 @@ export default class PraveenRNApp extends Component {
           showError: false
         },
         fullName: '',
+        accountValues: ["Praveen Kumar", "Accenture", "Newcastle"],
         curState: 'Initial'
       });
     };
     this._errorMessage = function () {
-      if (oThis.state.error.showError)
+       if (oThis.state.error.showError)
         return (
           <Text style={styles.error}>{oThis.state.error.message}</Text>
         );
@@ -70,7 +71,7 @@ export default class PraveenRNApp extends Component {
         },
         body: JSON.stringify({
           "email": oThis.state.Username,
-          "password": oThis.state.Password
+          "password": oThis.state.Password,
           "name": oThis.state.regName
         })
       }).then((responseJson) => {
@@ -127,17 +128,17 @@ export default class PraveenRNApp extends Component {
     };
   }
   render() {
-    if (this.state.curState != 'UserLoggedIn')
+    if (this.state.curState == 'UserLoggedIn')
       return (
-          <SignedOutView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
+          <SignedInView styles={styles} fullName={this.state.fullName} handleSignOut={this._handleSignOut} />
       );
-    else if (this.state.curState != 'UserSignUp')
+    else if (this.state.curState == 'UserSignUp')
       return (
           <SignUpView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
       );
-    else
+    else if (this.state.curState == 'Initial')
       return (
-          <SignedInView styles={styles} fullName={this.state.fullName} handleSignOut={this._handleSignOut} />
+          <SignedOutView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
       );
   }
 }
