@@ -37,7 +37,7 @@ export const SignUpView = ({styles, handleSignIn, handleSignInCheat, handleSignU
   </View>
   <View style={styles.signincont}>
     <View style={styles.signin}>
-      <TouchableHighlight onPress={handleSignIn}><Text style={styles.whiteFont}>Sign Up</Text></TouchableHighlight>
+      <TouchableHighlight onPress={handleSignUp}><Text style={styles.whiteFont}>Sign Up</Text></TouchableHighlight>
     </View>
   </View>
   <View style={styles.signup}>

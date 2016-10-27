@@ -63,7 +63,7 @@ export default class PraveenRNApp extends Component {
       oThis.setState(state);
     };
     this._handleSignUp = function () {
-      fetch("https://feedme.allan.cx/api/v1/authenticate", {
+      fetch("https://feedme.allan.cx/api/v1/signup", {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -77,13 +77,18 @@ export default class PraveenRNApp extends Component {
       }).then((responseJson) => {
         var res = JSON.parse(responseJson._bodyInit);
         if (responseJson.ok) {
-          if (res.code == "USER_CREATED")
-            ; // Success
+          // Success
+          if (res.code == "USER_CREATED") {
+            oThis.setState({
+              curState: "Initial"
+            });
+            console.warn("Registration Success! Please sign in.");
+          }
         } else {
           if (res.code == "SIGNUP_ERROR")
-            ; // Fish
+            console.warn("Registration Failed! Username already exists.");
           else if (res.code == "INVALID_PROMO")
-            ; // Fish
+            console.warn("Registration Failed! Invalid Promo Code.");
         }
       });
     };
@@ -134,7 +139,7 @@ export default class PraveenRNApp extends Component {
       );
     else if (this.state.curState == 'UserSignUp')
       return (
-          <SignUpView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
+          <SignUpView styles={styles} handleSignIn={this._handleSignIn} handleSignUp={this._handleSignUp} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
       );
     else if (this.state.curState == 'Initial')
       return (
