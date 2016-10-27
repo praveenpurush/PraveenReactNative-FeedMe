@@ -135,23 +135,24 @@ export default class PraveenRNApp extends Component {
     };
   }
   render() {
-    if (this.state.curState == 'UserLoggedIn') {
-      return (
-          <SignedInView styles={styles} fullName={this.state.fullName} handleSignOut={this._handleSignOut} />
-      );
-    }
-    else if (this.state.curState == 'UserSignUp') {
-      return (
-          <SignUpView styles={styles} handleSignIn={this._handleSignIn} handleSignUp={this._handleSignUp} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
-      );
-    }
-    else if (this.state.curState == 'Initial') {
-      return (
-          <SignedOutView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
-      );
-    }
-    else {
-      return null;
+    switch (this.state.curState) {
+      case "UserLoggedIn":
+        return (
+            <SignedInView styles={styles} fullName={this.state.fullName} handleSignOut={this._handleSignOut} />
+        );
+        break;
+      case "UserSignUp":
+        return (
+            <SignUpView styles={styles} handleSignIn={this._handleSignIn} handleSignUp={this._handleSignUp} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
+        );
+        break;
+      case "Initial":
+        return (
+            <SignedOutView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
+        );
+        break;
+      default:
+        return null;
     }
   }
 }
