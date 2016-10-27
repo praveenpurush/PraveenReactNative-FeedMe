@@ -52,6 +52,8 @@ export default class PraveenRNApp extends Component {
         return (
           <Text style={styles.error}>{oThis.state.error.message}</Text>
         );
+      else
+        return null;
     }
     this._handleSignInCheat = function () {
       oThis.setState({
@@ -129,7 +131,7 @@ export default class PraveenRNApp extends Component {
             }
           });
         }
-      });
+      }).catch((err) => console.log('error '+ JSON.stringify(err)));
     };
   }
   render() {
@@ -145,6 +147,8 @@ export default class PraveenRNApp extends Component {
       return (
           <SignedOutView styles={styles} handleSignIn={this._handleSignIn} handleSignInCheat={this._handleSignInCheat} errorMessage={this._errorMessage} setState={this._setState} />
       );
+    else
+      return null;
   }
 }
 
