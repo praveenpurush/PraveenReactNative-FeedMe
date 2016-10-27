@@ -61,6 +61,14 @@ export default class PraveenRNApp extends Component {
         fullName: 'Lord Praveen'
       });
     };
+    this._getAccountInfo = function () {
+      var accInfo = [];
+      for (var i in oThis.state.account) {
+        accInfo.push(i + ": " + oThis.state.account[i]);
+      }
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+      return ds.cloneWithRows(accInfo);
+    };
     this._setState = function (state) {
       oThis.setState(state);
     };
@@ -138,7 +146,7 @@ export default class PraveenRNApp extends Component {
     switch (this.state.curState) {
       case "UserLoggedIn":
         return (
-            <SignedInView styles={styles} fullName={this.state.fullName} handleSignOut={this._handleSignOut} />
+            <SignedInView styles={styles} fullName={this.state.fullName} handleSignOut={this._handleSignOut} state={this.state} getAccInfo={this._getAccountInfo} />
         );
         break;
       case "UserSignUp":
